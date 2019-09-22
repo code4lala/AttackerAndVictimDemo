@@ -1,14 +1,11 @@
 #include<stdio.h>
 #include<winsock2.h>
+#include "../Command.h"
+
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 #define BUFLEN 1024 //Max length of buffer
 #define CMD_COUNT 2
 #define PORT 8888
-enum {
-	CMD_MSG_BOX = '1',
-	CMD_SHELL_CODE,
-	CMD_NOPE
-};
 char buf[CMD_COUNT][BUFLEN] = { {
 CMD_SHELL_CODE
 // 0. open calc.exe

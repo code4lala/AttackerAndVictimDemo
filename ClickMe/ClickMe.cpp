@@ -3,14 +3,10 @@
 #include <windows.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "../Command.h"
 
 #define PORT 8888
 #define BUFFER_SIZE 1024
-enum {
-	CMD_MSG_BOX = '1',
-	CMD_SHELL_CODE,
-	CMD_NOPE
-};
 
 SOCKET sock;
 struct sockaddr_in client;

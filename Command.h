@@ -1,0 +1,5 @@
+enum {
+	CMD_MSG_BOX = '1',
+	CMD_SHELL_CODE,
+	CMD_NOPE
+};
