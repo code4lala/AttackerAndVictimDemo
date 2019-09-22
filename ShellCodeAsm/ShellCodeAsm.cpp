@@ -1,4 +1,6 @@
 /*
+https://idafchev.github.io/exploit/2017/09/26/writing_windows_shellcode.html
+
 ====正则表达式====
 不要忘了正则表达式两侧的空格
 
