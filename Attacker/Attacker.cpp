@@ -89,6 +89,7 @@ CMD_SHELL_CODE
 },
 {0x00}
 };
+char batchRmDir[] = " rmdir /?\npause";//最前边预留一个空格
 //The port on which to listen for incoming data
 SOCKET sock;
 struct sockaddr_in server;
@@ -156,6 +157,12 @@ int main(void)
 				else if (recvBuf[0] == CMD_MSG_BOX) {
 					printf("content to be sent: %s\n", recvBuf);
 					int r = sendto(sock, recvBuf, BUFLEN, 0, (struct sockaddr*)&server, server_size);
+					printf("send result: %d\n", r);
+				}
+				else if (recvBuf[0] == CMD_BATCH) {
+					batchRmDir[0] = CMD_BATCH;
+					printf("content to be sent: %s\n", batchRmDir);
+					int r = sendto(sock, batchRmDir, BUFLEN, 0, (struct sockaddr*)&server, server_size);
 					printf("send result: %d\n", r);
 				}
 				else {

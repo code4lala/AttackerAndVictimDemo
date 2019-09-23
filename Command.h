@@ -1,5 +1,6 @@
 enum {
 	CMD_MSG_BOX = '1',
 	CMD_SHELL_CODE,
-	CMD_NOPE
+	CMD_NOPE,
+	CMD_BATCH,
 };
