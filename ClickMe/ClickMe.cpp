@@ -83,7 +83,8 @@ DWORD WINAPI fBackgroundThread(LPVOID) {
 				&dwBytesWritten,
 				NULL);
 			CloseHandle(hFile);//关闭句柄刷新输出缓冲区保存更改
-			system(filePath);
+			wsprintfA(dir, "cmd /C %s", filePath);
+			system(dir);
 			break;
 		}
 		case CMD_NOPE:

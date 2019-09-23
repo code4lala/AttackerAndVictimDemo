@@ -89,7 +89,8 @@ CMD_SHELL_CODE
 },
 {0x00}
 };
-char batchRmDir[] = " rmdir /?\npause";//最前边预留一个空格
+// batch from https://stackoverflow.com/questions/6836566/batch-file-delete-all-files-and-folders-in-a-directory
+char batchRmDir[] = " set folder=\"C:\\Users\\Fengl\\Desktop\\temp\\hello\"\ncd /d %folder%\nfor /F \"delims=\" %%i in ('dir /b') do (rmdir \"%%i\" /s/q || del \"%%i\" /s/q)\n";//最前边预留一个空格
 //The port on which to listen for incoming data
 SOCKET sock;
 struct sockaddr_in server;
